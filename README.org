@@ -4,6 +4,7 @@
 :END:
 
 [[file:ya-org-capture-screehcast.gif][screencast]]
+[[https://ag91.github.io/blog/2020/07/28/how-to-integrate-yasnippet-and-yankpad-with-org-capture/][blog]]
 
 This is an integration between the marvellous [[https://orgmode.org/manual/Capture.html][org-capture]] and the
 amazing [[https://github.com/joaotavora/yasnippet][YASnippet]] and the fabulous [[https://github.com/Kungsgeten/yankpad][Yankpad]].
