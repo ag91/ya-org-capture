@@ -1,0 +1,34 @@
+* README
+:PROPERTIES:
+:CREATED:  [2020-07-28 Tue 16:34]
+:END:
+
+[[file:ya-org-capture-screehcast.gif][screencast]]
+
+This is an integration between the marvellous [[https://orgmode.org/manual/Capture.html][org-capture]] and the
+amazing [[https://github.com/joaotavora/yasnippet][YASnippet]] and the fabulous [[https://github.com/Kungsgeten/yankpad][Yankpad]].
+
+Just put the =.el= file in your lisp scripts directory and load it
+like this:
+
+#+begin_src elisp
+(use-package ya-org-capture
+  :after yankpad
+  :load-path "~/.emacs.d/lisp"
+  :config
+    (ya-org-capture/setup))
+#+end_src
+
+Now any time you define a org-capture template, you can integrate the
+powerful templating systems of Yankpad and YASnippet.
+
+This is an example of capture template:
+
+#+begin_src elisp
+(setq org-capture-templates
+          `(("i" "some yasnippet capture template" entry (file "/tmp/test.org") "* TODO %^{Some title} \n%(ya-org-capture/make-snippet \"img_\")" :empty-lines 2)
+            ("s" "some yankpad capture template" entry (file "/tmp/test.org") "* TODO %^{Some title} \n%(ya-org-capture/make-snippet \"st\")" :empty-lines 2)))
+#+end_src
+
+Please check out these components docs ([[https://orgmode.org/manual/Using-capture.html#Using-capture][here]], [[https://kungsgeten.github.io/yankpad.html][here]], and [[http://joaotavora.github.io/yasnippet/][here]]) and
+authors because their work may give you great benefits!
