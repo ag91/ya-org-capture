@@ -3,8 +3,8 @@
 ;; Copyright (C) 2020 Andrea Giugliano
 
 ;; Author: Andrea Giugliano <agiugliano@live.it>
-;; Version: 0.0.0
-;; Package-Version: 20200728.000
+;; Version: 0.0.1
+;; Package-Version: 20200729.000
 ;; Keywords: org-mode org-capture yasnippet yankpad
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -68,8 +68,10 @@
     (ya-org-capture/snippet-expand)))
 
 ;;;###autoload
-(defun ya-org-capture/make-snippet (snippet-name)
-  "Concatenate prefix to SNIPPET-NAME for substitution in `org-capture' flow."
+(defun ya-org-capture/make-snippet (snippet-name &optional yp-category)
+  "Concatenate prefix to SNIPPET-NAME for substitution in `org-capture' flow.
+Optionally set `yankpad-category' to YP-CATEGORY."
+  (if yp-category (yankpad-set-local-category yp-category))
   (concatenate 'string ya-org-capture/ya-prefix snippet-name "\n"))
 
 (defun ya-org-capture/setup ()
