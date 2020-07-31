@@ -3,8 +3,8 @@
 ;; Copyright (C) 2020 Andrea Giugliano
 
 ;; Author: Andrea Giugliano <agiugliano@live.it>
-;; Version: 0.0.1
-;; Package-Version: 20200729.000
+;; Version: 0.1.0
+;; Package-Version: 20200731.000
 ;; Keywords: org-mode org-capture yasnippet yankpad
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -55,15 +55,26 @@
       ',fs
       :initial-value nil)))
 
+(defun ya-org-capture/org-capture-fill-template ()
+  "Post-process `org-mode' snippet to expand `org-capture' syntax. This only works for YASnippet."
+  (let ((template (buffer-substring-no-properties yas-snippet-beg yas-snippet-end)))
+    (kill-region yas-snippet-beg yas-snippet-end)
+    (insert (org-capture-fill-template template))))
+
 (defun ya-org-capture/snippet-expand ()
   "Try to expand snippet at point with `yankdpad-expand' and then with `yas-expand'."
   (interactive)
   (funcall (ya-org-capture/or-else 'yankpad-expand 'yas-expand) nil))
 
+(defun ya-org-capture/support-org-syntax-for-yasnippets ()
+  "Allow `org-capture' to expand its syntax for YASnippets."
+  (add-hook 'yas-after-exit-snippet-hook 'ya-org-capture/org-capture-fill-template nil t))
+
 (defun ya-org-capture/expand-snippets ()
   "Expand `ya-org-capture/ya-prefix'."
   (when (search-forward ya-org-capture/ya-prefix nil t)
     (replace-match "")
+    (ya-org-capture/support-org-syntax-for-yasnippets)
     (end-of-line)
     (ya-org-capture/snippet-expand)))
 
