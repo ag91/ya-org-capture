@@ -3,8 +3,8 @@
 ;; Copyright (C) 2020 Andrea Giugliano
 
 ;; Author: Andrea Giugliano <agiugliano@live.it>
-;; Version: 0.1.0
-;; Package-Version: 20200731.000
+;; Version: 0.1.1
+;; Package-Version: 20200802.000
 ;; Keywords: org-mode org-capture yasnippet yankpad
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -47,6 +47,14 @@
   :group 'ya-org-capture
   :type 'string)
 
+(defcustom ya-org-capture/expand-snippet-functions (list 'yankpad-expand 'yas-expand)
+  "Functions used to expand the snippet at point. Order is
+  important: if the functions are able to expand a snippet with
+  the same key, the first function of the list takes precedence
+  over the second."
+  :group 'ya-org-capture
+  :type 'list)
+
 (defun ya-org-capture/or-else (&rest fs)
   "Compose partial functions FS until one of them produces a result or there are no more FS available."
   `(lambda (i)
@@ -64,7 +72,7 @@
 (defun ya-org-capture/snippet-expand ()
   "Try to expand snippet at point with `yankdpad-expand' and then with `yas-expand'."
   (interactive)
-  (funcall (ya-org-capture/or-else 'yankpad-expand 'yas-expand) nil))
+  (funcall (apply 'ya-org-capture/or-else ya-org-capture/expand-snippet-functions) nil))
 
 (defun ya-org-capture/support-org-syntax-for-yasnippets ()
   "Allow `org-capture' to expand its syntax for YASnippets."
