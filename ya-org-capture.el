@@ -59,7 +59,7 @@
   "Compose partial functions FS until one of them produces a result or there are no more FS available."
   `(lambda (i)
      (reduce
-      (lambda (acc f) (or acc (funcall f i)))
+      (lambda (acc f) (or acc (when (fboundp f) (funcall f i))))
       ',fs
       :initial-value nil)))
 
