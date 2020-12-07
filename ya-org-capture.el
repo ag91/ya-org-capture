@@ -65,9 +65,16 @@
 
 (defun ya-org-capture/org-capture-fill-template ()
   "Post-process `org-mode' snippet to expand `org-capture' syntax. This only works for YASnippet."
-  (let ((template (buffer-substring-no-properties yas-snippet-beg yas-snippet-end)))
-    (kill-region yas-snippet-beg yas-snippet-end)
-    (insert (org-capture-fill-template template))))
+  (let ((template (buffer-substring-no-properties yas-snippet-beg yas-snippet-end))
+	(front-text (buffer-substring-no-properties (point-min) yas-snippet-beg))
+        (back-text (buffer-substring-no-properties yas-snippet-end (point-max)))
+	(ya-org-capture--temp-buffer (get-buffer-create "ya-org-capture-temp")))
+    (with-current-buffer ya-org-capture--temp-buffer
+      (insert front-text
+	      (org-capture-fill-template template)
+              back-text))
+    (replace-buffer-contents ya-org-capture--temp-buffer)
+    (kill-buffer ya-org-capture--temp-buffer)))
 
 (defun ya-org-capture/snippet-expand ()
   "Try to expand snippet at point with `yankdpad-expand' and then with `yas-expand'."
