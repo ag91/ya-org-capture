@@ -37,6 +37,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defgroup ya-org-capture nil
   "Options specific to ya-org-capture."
   :tag "ya-org-capture"
@@ -58,7 +60,7 @@
 (defun ya-org-capture/or-else (&rest fs)
   "Compose partial functions FS until one of them produces a result or there are no more FS available."
   `(lambda (i)
-     (reduce
+     (cl-reduce
       (lambda (acc f) (or acc (when (fboundp f) (funcall f i))))
       ',fs
       :initial-value nil)))
@@ -98,7 +100,7 @@
   "Concatenate prefix to SNIPPET-NAME for substitution in `org-capture' flow.
 Optionally set `yankpad-category' to YP-CATEGORY."
   (if yp-category (yankpad-set-local-category yp-category))
-  (concatenate 'string ya-org-capture/ya-prefix snippet-name "\n"))
+  (cl-concatenate 'string ya-org-capture/ya-prefix snippet-name "\n"))
 
 (defun ya-org-capture/setup ()
   "Setup integration between org-capture and yasnippet/yankpad."
